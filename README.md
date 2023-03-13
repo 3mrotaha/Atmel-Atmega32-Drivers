@@ -4,8 +4,7 @@ This repository contains drivers for ATmega32 microcontroller peripherals, organ
 
 ## APP 
 
-This folder contains application-specific code that interfaces with the drivers in the HAL and MCAL folders. It includes the `main.c` file, which is the main application code that uses the peripheral drivers to achieve the desired functionality. It also includes the `tree.txt` file, which is a text file that shows the directory structure of the drivers folder.
-
+This folder contains application-specific code that interfaces with the drivers in the HAL and MCAL folders. It includes the `main.c` file, which is the main application code that uses the peripheral drivers to achieve the desired functionality.
 ## HAL 
 
 This folder contains drivers for the hardware abstraction layer (HAL), which abstracts the hardware details of the ATmega32 peripherals and provides a consistent interface for the application to use. The HAL folder includes subfolders for each of the supported peripheral types, including:
