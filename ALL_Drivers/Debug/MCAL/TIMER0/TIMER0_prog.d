@@ -1,2 +1,0 @@
-MCAL/TIMER0/TIMER0_prog.o MCAL/TIMER0/TIMER0_prog.o:  \
- ../MCAL/TIMER0/TIMER0_prog.c
