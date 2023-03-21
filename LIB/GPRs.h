@@ -9,8 +9,10 @@
 #ifndef GPRS_H_
 #define GPRS_H_
 #define F_CPU			(1000000U)
-#define SREG			*((volatile uint8*)0x5F)
 
+//-------------- GLOPAL INTERRUPT REGISTER -------------------
+#define SREG			*((volatile uint8*)0x5F)
+//------------------ DIO REGISTERS ---------------------------
 #define DDRA			*((volatile uint8*) 0x3A)
 #define PORTA			*((volatile uint8*) 0x3B)
 #define PINA			*((volatile uint8*) 0x39)
@@ -23,23 +25,23 @@
 #define DDRD			*((volatile uint8*) 0x31)
 #define PORTD			*((volatile uint8*) 0x32)
 #define PIND			*((volatile uint8*) 0x30)
-
+//------------------ ADC REGISTERS ---------------------------
 #define ADMUX			*((volatile uint8*)0x27)
 #define ADCSRA			*((volatile uint8*)0x26)
 #define ADC_DATA_REGS	*((volatile sint16*)0x24)
 #define ADCL			*((volatile sint16*)0x24)
 #define ADCH			*((volatile sint16*)0x25)
 #define SFIOR			*((volatile uint8*)0x50)
-
+//------------- EXTERNAL INTERRUPT REGISTERS ------------------
 #define MCUCR			*((volatile uint8*)0x55)
 #define MCUCSR			*((volatile uint8*)0x54)
 #define GICR			*((volatile uint8*)0x5B)
 #define GIFR			*((volatile uint8*)0x5A)
-
+//------------------ TIMER0 REGISTERS --------------------------
 #define TCCR0			*((volatile uint8*) 0x53)
 #define TCNT0			*((volatile uint8*) 0x52)
 #define OCR0			*((volatile uint8*) 0x5C)
-
+//------------------ TIMER1 REGISTERS --------------------------
 #define TCCR1A			*((volatile uint8*)0x4F)
 #define TCCR1B			*((volatile uint8*)0x4E)
 #define TCNT1H			*((volatile uint8*)0x4D)
@@ -54,21 +56,26 @@
 #define ICR1H			*((volatile uint8*)0x47)
 #define ICR1L			*((volatile uint8*)0x46)
 #define ICR1			*((volatile uint16*)0x46)
-
+//------------------ TIMER INTERRUPT REGISTERS ------------------
 #define TIFR			*((volatile uint8*)0x58)
 #define TIMSK			*((volatile uint8*)0x59)
-
+//------------------ TIMER2 REGISTERS ---------------------------
 #define TCCR2			*((volatile uint8*)0x45)
 #define TCNT2			*((volatile uint8*)0x44)
 #define OCR2			*((volatile uint8*)0x43)
 #define ASSR			*((volatile uint8*)0x42)
-
+//------------------ UART REGISTERS ---------------------------
 #define UCSRA			*((volatile uint8*)0x2B)
 #define UBRRL			*((volatile uint8*)0x29)
 #define UDR				*((volatile uint8*)0x2C)
 #define UCSRB			*((volatile uint8*)0x2A)
 #define UCSRC			*((volatile uint8*)0x40)
 #define UBRRH			*((volatile uint8*)0x40)
+//------------------ SPI REGISTERS ---------------------------
+#define SPDR			*((volatile uint8*)0x2F)
+#define SPSR			*((volatile uint8*)0x2E)
+#define SPCR			*((volatile uint8*)0x2D)
+
 
 #define ADC_INT_VECT				__vector_16
 
@@ -99,6 +106,8 @@
 #define UART_UDRE_VECT				__vector_14
 
 #define UART_TXC_VECT				__vector_15
+
+#define SPI_VECT					__vector_12
 
 #define ISR(VECTOR_NUM)		void VECTOR_NUM(void) __attribute__((signal, used));\
 							void VECTOR_NUM(void)

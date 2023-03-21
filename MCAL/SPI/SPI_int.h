@@ -13,7 +13,11 @@ ErrorStates_t SPI_enuInit(void);
 
 ErrorStates_t SPI_enuMasterTransmit(uint8 Copy_uint8byte, ST_Slave_t Copy_stSlave);
 
-ErrorStates_t SPI_enuSlaveReceive(uint8 *Copy_uint8Byte);
+ErrorStates_t SPI_enuSlaveReceive(uint8 *Copy_puint8Byte);
+
+ErrorStates_t SPI_enuMasterReceive(uint8 *Copy_puint8Byte);
+
+ErrorStates_t SPI_enuSlaveTransmit(uint8 Copy_uint8Byte);
 
 uint8 SPI_uint8WaitTransmit(void);
 

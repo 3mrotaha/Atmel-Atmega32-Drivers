@@ -7,7 +7,7 @@
 
 #ifndef DIO_INT_H_
 #define DIO_INT_H_
-
+#include "../../LIB/std_types.h"
 #include "../../LIB/ErrorStates.h"
 
 #define DIO_uint8_PIN0				0

@@ -5,6 +5,7 @@
  *  Author: amrmo
  */ 
 
+#include "../../LIB/std_types.h"
 
 #ifndef SPI_PRIV_H_
 #define SPI_PRIV_H_
@@ -48,9 +49,11 @@
 
 
 typedef struct{
-	uint8_t slaveID;
-	uint8_t ssPort;
-	uint8_t sspin;
+	uint8 EXINT_ID;
+	uint8 ssPort;
+	uint8 sspin;
 }ST_Slave_t;
+
+static void SPI_voidMasterReceive(uint8 *Copy_puint8Byte);
 
 #endif /* SPI_PRIV_H_ */

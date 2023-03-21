@@ -12,41 +12,42 @@
 #include "EXINT_priv.h"
 #include "EXINT_config.h"
 
+extern EXINT_t EXINT_AstrExINTConfig[EXINT_NUM];
 void* EXINT_pvoidParameter[EXINT_NUM] = {NULL, NULL, NULL};
 void (*EXINT_pvoidfuncCallBack[EXINT_NUM])(void*) = {NULL, NULL, NULL};
 
 
-ErrorStates_t EXINT_enuInit(EXINT_t* Copy_pstrExIntConfig){
+ErrorStates_t EXINT_enuInit(void){
 	ErrorStates_t Local_enuErrorStates = ES_NOK;
-	if(Copy_pstrExIntConfig != NULL){
+	if(EXINT_AstrExINTConfig != NULL){
 		uint8 Local_uint8Iterator;
 		for(Local_uint8Iterator = 0; Local_uint8Iterator < EXINT_NUM; Local_uint8Iterator++){
-			if(Copy_pstrExIntConfig[Local_uint8Iterator].Local_uint8_INTConfig == EXINT_ENABLED){
+			if(EXINT_AstrExINTConfig[Local_uint8Iterator].Local_uint8_INTConfig == EXINT_ENABLED){
 				MCUCR &= ~(EXINT_BIT_MASK << EXINT_ISC00_BIT);
 				MCUCR &= ~(EXINT_BIT_MASK << EXINT_ISC01_BIT);
 				MCUCR &= ~(EXINT_BIT_MASK << EXINT_ISC10_BIT);
 				MCUCR &= ~(EXINT_BIT_MASK << EXINT_ISC11_BIT);
 				MCUCSR &= ~(EXINT_BIT_MASK << EXINT_ISC2_BIT);
 				SREG |= (EXINT_BIT_MASK << EXINT_I_BIT);
-				switch(Copy_pstrExIntConfig[Local_uint8Iterator].Local_uint8_INTID){
+				switch(EXINT_AstrExINTConfig[Local_uint8Iterator].Local_uint8_INTID){
 					case EXINT_INT0:
 						GICR |= (EXINT_BIT_MASK << EXINT_INT0_BIT);
-						MCUCR |= (Copy_pstrExIntConfig[Local_uint8Iterator].Local_uint8riggerType << EXINT_ISC00_BIT);
+						MCUCR |= (EXINT_AstrExINTConfig[Local_uint8Iterator].Local_uint8riggerType << EXINT_ISC00_BIT);
 						GIFR |= (EXINT_BIT_MASK << EXINT_INT0_BIT);
 						Local_enuErrorStates = ES_OK;
 						break;
 					case EXINT_INT1:
 						GICR |= (EXINT_BIT_MASK << EXINT_INT1_BIT);
-						MCUCR |= (Copy_pstrExIntConfig[Local_uint8Iterator].Local_uint8riggerType << EXINT_ISC10_BIT);
+						MCUCR |= (EXINT_AstrExINTConfig[Local_uint8Iterator].Local_uint8riggerType << EXINT_ISC10_BIT);
 						GIFR |= (EXINT_BIT_MASK << EXINT_INT1_BIT);
 						Local_enuErrorStates = ES_OK;
 						break;
 					case EXINT_INT2:
 						GICR |= (EXINT_BIT_MASK << EXINT_INT2_BIT);
-						if(Copy_pstrExIntConfig[Local_uint8Iterator].Local_uint8riggerType == EXINT_FALLING_EDGE){
+						if(EXINT_AstrExINTConfig[Local_uint8Iterator].Local_uint8riggerType == EXINT_FALLING_EDGE){
 							MCUCSR |= (EXINT2_FALLING_EDGE << EXINT_ISC2_BIT);
 						}
-						else if(Copy_pstrExIntConfig[Local_uint8Iterator].Local_uint8riggerType == EXINT_RISING_EDGE){
+						else if(EXINT_AstrExINTConfig[Local_uint8Iterator].Local_uint8riggerType == EXINT_RISING_EDGE){
 							MCUCSR |= (EXINT2_RISING_EDGE << EXINT_ISC2_BIT);
 						}
 						GIFR |= (EXINT_BIT_MASK << EXINT_INT2_BIT);
@@ -66,11 +67,11 @@ ErrorStates_t EXINT_enuInit(EXINT_t* Copy_pstrExIntConfig){
 	return Local_enuErrorStates;
 }
 
-ErrorStates_t EXINT_enuIntEnable(EXINT_t* Copy_pstrExIntConfig, uint8 Copy_uint8TriggerType){
+ErrorStates_t EXINT_enuIntEnable(uint8 Copy_uint8IntID, uint8 Copy_uint8TriggerType){
 	ErrorStates_t Local_enuErrorStates = ES_NOK;
-	if(Copy_pstrExIntConfig != NULL){
+	if(EXINT_AstrExINTConfig != NULL){
 		SREG |= (EXINT_BIT_MASK << EXINT_I_BIT);
-		switch(Copy_pstrExIntConfig->Local_uint8_INTID){
+		switch(Copy_uint8IntID){
 			case EXINT_INT0:
 				MCUCR &= ~(EXINT_BIT_MASK << EXINT_ISC00_BIT);
 				MCUCR &= ~(EXINT_BIT_MASK << EXINT_ISC01_BIT);
@@ -105,10 +106,10 @@ ErrorStates_t EXINT_enuIntEnable(EXINT_t* Copy_pstrExIntConfig, uint8 Copy_uint8
 	return Local_enuErrorStates;
 }
 
-ErrorStates_t EXINT_enuIntDisable(EXINT_t* Copy_pstrExIntConfig){
+ErrorStates_t EXINT_enuIntDisable(uint8 Copy_uint8IntID){
 	ErrorStates_t Local_enuErrorStates = ES_NOK;
-	if(Copy_pstrExIntConfig != NULL){
-		switch(Copy_pstrExIntConfig->Local_uint8_INTID){
+	if(EXINT_AstrExINTConfig != NULL){
+		switch(Copy_uint8IntID){
 		case EXINT_INT0:
 			GICR &= ~(EXINT_BIT_MASK << EXINT_INT0_BIT);
 			MCUCR &= ~(EXINT_BIT_MASK << EXINT_ISC00_BIT);
