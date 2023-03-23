@@ -29,8 +29,8 @@ ErrorStates_t SPI_enuInit(void){
 		for(uint8 Iterator = 0; Iterator < SLAVES_NUM; Iterator++){
 			DIO_enuSetPinDir(SPI_AstSlaves[Iterator].ssPort, SPI_AstSlaves[Iterator].sspin, OUTPUT);
 			DIO_enuSetPinValue(SPI_AstSlaves[Iterator].ssPort, SPI_AstSlaves[Iterator].sspin, HIGH);
-			EXINT_enuCallBack(&SPI_enuMasterReceive, NULL, SPI_AstSlaves[Iterator].EXINT_ID);
-			EXINT_enuIntEnable(SPI_AstSlaves[Iterator].EXINT_ID);
+			EXINT_enuCallBack(&SPI_voidMasterReceive, NULL, SPI_AstSlaves[Iterator].EXINT_ID);
+			EXINT_enuIntEnable(SPI_AstSlaves[Iterator].EXINT_ID, EXINTuint8_FALLING_EDGE);
 		}
 		// set the sck pin as output
 		DIO_enuSetPinDir(DIO_uint8_PORTB,DIO_uint8_PIN7,OUTPUT);
@@ -61,23 +61,23 @@ ErrorStates_t SPI_enuInit(void){
 	SPSR |= (SPI_SPEED << SPSR_SPI2X_BIT);		
 }
 
-ErrorStates_t SPI_enuMasterTransmit(uint8 Copy_uint8Byte, ST_Slave_t Copy_stSlave){
-	if(Copy_stSlave.EXINT_ID < EXINT_NUM){
+ErrorStates_t SPI_enuMasterTransmit(uint8 Copy_uint8Byte, uint8 Copy_stSlaveID){
+	if(SPI_AstSlaves[Copy_stSlaveID].EXINT_ID < EXINT_NUM){
 
-		EXINT_enuIntDisable(Copy_stSlave.EXINT_ID);
+		EXINT_enuIntDisable(SPI_AstSlaves[Copy_stSlaveID].EXINT_ID);
 		
 		// assign the byte to be sent to the spi data register and start transmission
 		SPDR = Copy_uint8Byte;
 		// select the slave
-		DIO_enuSetPinValue(Copy_stSlave.ssPort, Copy_stSlave.sspin, LOW);
+		DIO_enuSetPinValue(SPI_AstSlaves[Copy_stSlaveID].ssPort, SPI_AstSlaves[Copy_stSlaveID].sspin, LOW);
 		// wait on the flag to send
 		while(!((SPSR >> SPSR_SPIF_BIT) & BIT_MASK1));
 		
 		// select the slave
-		DIO_enuSetPinValue(Copy_stSlave.ssPort, Copy_stSlave.sspin, HIGH);
+		DIO_enuSetPinValue(SPI_AstSlaves[Copy_stSlaveID].ssPort, SPI_AstSlaves[Copy_stSlaveID].sspin, HIGH);
 
 		
-		EXINT_enuIntEnable(Copy_stSlave.EXINT_ID);
+		EXINT_enuIntEnable(SPI_AstSlaves[Copy_stSlaveID].EXINT_ID, EXINTuint8_FALLING_EDGE);
 		
 		return ES_OK;
 	}
@@ -105,10 +105,18 @@ uint8 SPI_uint8WaitTransmit(void){
 	
 	while(!((SPSR >> SPSR_SPIF_BIT) & BIT_MASK1));
 	
+	uint8 local_uint8Flush = SPDR;
+	
 	return 1;
 }
 ErrorStates_t SPI_enuMasterReceive(uint8 *Copy_puint8Byte){
-	if(Copy_puint8Byte )
+	if(Copy_puint8Byte != NULL){
+		*Copy_puint8Byte = SPI_uint8Byte;
+		return ES_OK;
+	}
+	else{
+		return ES_NULL_POINTER;
+	}
 }
 static void SPI_voidMasterReceive(void){
 		SPDR = 'R';
@@ -127,6 +135,8 @@ ErrorStates_t SPI_enuSlaveTransmit(uint8 Copy_uint8Byte){
 		SPDR = Copy_uint8Byte;
 		// wait on the flag to send
 		while(!((SPSR >> SPSR_SPIF_BIT) & BIT_MASK1));		
+		
+		uint8 local_uint8Flush = SPDR;
 		
 		DIO_enuSetPinValue(DIO_uint8_PORTB, DIO_uint8_PIN4, HIGH);
 		

@@ -11,5 +11,5 @@
 
 
 ST_Slave_t SPI_AstSlaves[SLAVES_NUM] = {
-	{0, DIO_uint8_PORTD, DIO_uint8_PIN0},
+	{0, DIO_uint8_PORTD, DIO_uint8_PIN2},
 };

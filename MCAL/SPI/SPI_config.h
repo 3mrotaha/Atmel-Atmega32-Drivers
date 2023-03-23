@@ -42,13 +42,13 @@
 	- CPOL_SET: Leading edge is RISING, Trailing edge is FALLING
 	- CPOL_CLEARED: Leading edge is FALLING, Trailing edge is RISING
 */
-#define CLOCK_POLARITY CPOL_SET
+#define CLOCK_POLARITY CPOL_CLEARED
 /*
 	select the clock phase:
 	- CPHA_SET: Leading edge SAMPLE, Trailing edge SETUP
 	- CPHA_CLEARED: Leading edge SETUP, Trailing edge SAMPLE
 */
-#define CLOCK_PHASE CPHA_SET
+#define CLOCK_PHASE CPHA_CLEARED
 /*
 	Choose even to enable or disable the spi interrupt
 	- SPI_INTERRUPT_ENABLE: An interrupt request is generated on the transmit end flag setting

@@ -54,6 +54,6 @@ typedef struct{
 	uint8 sspin;
 }ST_Slave_t;
 
-static void SPI_voidMasterReceive(uint8 *Copy_puint8Byte);
+static void SPI_voidMasterReceive(void);
 
 #endif /* SPI_PRIV_H_ */
